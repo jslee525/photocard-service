@@ -439,14 +439,14 @@
             box-shadow: 0 4px 12px rgba(33, 175, 191, 0.1);
         }
 
-        .influencer-grid {
+        .theme-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 24px;
             margin-top: 32px;
         }
 
-        .influencer-card {
+        .theme-card {
             background: rgba(255, 255, 255, 0.8);
             border: 1.5px solid #e2e8f0;
             border-radius: 20px;
@@ -457,49 +457,49 @@
             text-align: center;
         }
 
-        .influencer-card:hover, .influencer-card.selected {
+        .theme-card:hover, .theme-card.selected {
             border-color: #21afbf;
             background: rgba(255, 255, 255, 0.95);
             transform: translateY(-4px);
             box-shadow: 0 12px 30px rgba(33, 175, 191, 0.15);
         }
 
-        .influencer-avatar {
+        .theme-icon {
             margin-bottom: 20px;
             display: flex;
             justify-content: center;
         }
 
-        .influencer-info {
+        .theme-info {
             text-align: center;
         }
 
-        .influencer-name {
+        .theme-name {
             font-size: 1.25rem;
             font-weight: 600;
             color: #2d3748;
             margin-bottom: 8px;
         }
 
-        .influencer-category {
+        .theme-category {
             color: #718096;
             font-size: 0.95rem;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
-        .influencer-followers {
+        .theme-description {
             color: #21afbf;
             font-weight: 500;
             font-size: 0.9rem;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
-        .influencer-templates {
+        .theme-templates {
             color: #4a5568;
             font-size: 0.85rem;
         }
 
-        .selected-influencer-info {
+        .selected-theme-info {
             background: rgba(33, 175, 191, 0.05);
             border: 1px solid rgba(33, 175, 191, 0.2);
             border-radius: 16px;
@@ -510,20 +510,20 @@
             gap: 20px;
         }
 
-        .selected-influencer-avatar {
+        .selected-theme-icon {
             width: 60px;
             height: 60px;
-            border-radius: 50%;
+            border-radius: 16px;
             flex-shrink: 0;
         }
 
-        .selected-influencer-details h3 {
+        .selected-theme-details h3 {
             margin: 0 0 8px 0;
             color: #2d3748;
             font-size: 1.1rem;
         }
 
-        .selected-influencer-details p {
+        .selected-theme-details p {
             margin: 0;
             color: #718096;
             font-size: 0.9rem;
@@ -905,98 +905,122 @@
         <div id="customer-flow" class="hidden">
             <button class="back-btn" onclick="showMainScreen()">← 메인으로</button>
             
-            <!-- 고객 1단계: 인플루언서 선택 -->
+            <!-- 고객 1단계: 포토부스 테마 선택 -->
             <div id="customer-step1">
-                <h2>인플루언서 선택</h2>
+                <h2>포토부스 테마 선택</h2>
                 <div class="subtitle" style="text-align: center; margin-bottom: 40px; color: #718096; font-size: 1.1rem;">
-                    마음에 드는 인플루언서를 선택하고 그들의 템플릿을 확인해보세요
+                    특별한 순간을 담을 포토부스 테마를 선택해보세요
                 </div>
                 
-                <div class="influencer-grid">
-                    <div class="influencer-card" onclick="selectInfluencer(1)">
-                        <div class="influencer-avatar">
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem;">👩‍🎨</div>
+                <div class="theme-grid">
+                    <div class="theme-card" onclick="selectTheme(1)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">💕</div>
                         </div>
-                        <div class="influencer-info">
-                            <div class="influencer-name">미소 김</div>
-                            <div class="influencer-category">뷰티 • 라이프스타일</div>
-                            <div class="influencer-followers">팔로워 85.2K</div>
-                            <div class="influencer-templates">템플릿 12개</div>
-                        </div>
-                    </div>
-                    
-                    <div class="influencer-card" onclick="selectInfluencer(2)">
-                        <div class="influencer-avatar">
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem;">🧑‍💻</div>
-                        </div>
-                        <div class="influencer-info">
-                            <div class="influencer-name">테크보이 이준</div>
-                            <div class="influencer-category">테크 • 리뷰</div>
-                            <div class="influencer-followers">팔로워 124K</div>
-                            <div class="influencer-templates">템플릿 8개</div>
+                        <div class="theme-info">
+                            <div class="theme-name">커플 데이트</div>
+                            <div class="theme-category">로맨틱 • 달달함</div>
+                            <div class="theme-description">둘만의 특별한 순간</div>
+                            <div class="theme-templates">템플릿 15개</div>
                         </div>
                     </div>
                     
-                    <div class="influencer-card" onclick="selectInfluencer(3)">
-                        <div class="influencer-avatar">
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem;">🎵</div>
+                    <div class="theme-card" onclick="selectTheme(2)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">🎄</div>
                         </div>
-                        <div class="influencer-info">
-                            <div class="influencer-name">멜로디 박</div>
-                            <div class="influencer-category">음악 • 댄스</div>
-                            <div class="influencer-followers">팔로워 203K</div>
-                            <div class="influencer-templates">템플릿 15개</div>
-                        </div>
-                    </div>
-                    
-                    <div class="influencer-card" onclick="selectInfluencer(4)">
-                        <div class="influencer-avatar">
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem;">🎨</div>
-                        </div>
-                        <div class="influencer-info">
-                            <div class="influencer-name">아티스트 최</div>
-                            <div class="influencer-category">아트 • 디자인</div>
-                            <div class="influencer-followers">팔로워 67.8K</div>
-                            <div class="influencer-templates">템플릿 20개</div>
+                        <div class="theme-info">
+                            <div class="theme-name">크리스마스</div>
+                            <div class="theme-category">시즌 • 홀리데이</div>
+                            <div class="theme-description">따뜻한 겨울 추억</div>
+                            <div class="theme-templates">템플릿 12개</div>
                         </div>
                     </div>
                     
-                    <div class="influencer-card" onclick="selectInfluencer(5)">
-                        <div class="influencer-avatar">
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #ffa8ff 0%, #8ac6ff 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem;">🌸</div>
+                    <div class="theme-card" onclick="selectTheme(3)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">🌸</div>
                         </div>
-                        <div class="influencer-info">
-                            <div class="influencer-name">꽃님 강</div>
-                            <div class="influencer-category">패션 • 스타일링</div>
-                            <div class="influencer-followers">팔로워 156K</div>
-                            <div class="influencer-templates">템플릿 18개</div>
+                        <div class="theme-info">
+                            <div class="theme-name">벚꽃 나들이</div>
+                            <div class="theme-category">봄 • 자연</div>
+                            <div class="theme-description">핑크빛 로맨스</div>
+                            <div class="theme-templates">템플릿 10개</div>
                         </div>
                     </div>
                     
-                    <div class="influencer-card" onclick="selectInfluencer(6)">
-                        <div class="influencer-avatar">
-                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); display: flex; align-items: center; justify-content: center; font-size: 2rem;">🏃‍♂️</div>
+                    <div class="theme-card" onclick="selectTheme(4)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">📸</div>
                         </div>
-                        <div class="influencer-info">
-                            <div class="influencer-name">헬스킹 정</div>
-                            <div class="influencer-category">피트니스 • 헬스</div>
-                            <div class="influencer-followers">팔로워 98.5K</div>
-                            <div class="influencer-templates">템플릿 10개</div>
+                        <div class="theme-info">
+                            <div class="theme-name">인생네컷</div>
+                            <div class="theme-category">클래식 • 추억</div>
+                            <div class="theme-description">소중한 일상의 기록</div>
+                            <div class="theme-templates">템플릿 18개</div>
+                        </div>
+                    </div>
+                    
+                    <div class="theme-card" onclick="selectTheme(5)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #ffa8ff 0%, #8ac6ff 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">🎂</div>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">생일 파티</div>
+                            <div class="theme-category">축하 • 기념일</div>
+                            <div class="theme-description">특별한 날의 주인공</div>
+                            <div class="theme-templates">템플릿 14개</div>
+                        </div>
+                    </div>
+                    
+                    <div class="theme-card" onclick="selectTheme(6)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">🏖️</div>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">여름 휴가</div>
+                            <div class="theme-category">바캉스 • 여행</div>
+                            <div class="theme-description">시원한 여름 추억</div>
+                            <div class="theme-templates">템플릿 13개</div>
+                        </div>
+                    </div>
+                    
+                    <div class="theme-card" onclick="selectTheme(7)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">👻</div>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">할로윈</div>
+                            <div class="theme-category">코스튬 • 재미</div>
+                            <div class="theme-description">무서우면서도 귀여운</div>
+                            <div class="theme-templates">템플릿 11개</div>
+                        </div>
+                    </div>
+                    
+                    <div class="theme-card" onclick="selectTheme(8)">
+                        <div class="theme-icon">
+                            <div style="width: 80px; height: 80px; border-radius: 20px; background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%); display: flex; align-items: center; justify-content: center; font-size: 2.2rem;">🍂</div>
+                        </div>
+                        <div class="theme-info">
+                            <div class="theme-name">가을 감성</div>
+                            <div class="theme-category">계절 • 분위기</div>
+                            <div class="theme-description">따스한 가을 햇살</div>
+                            <div class="theme-templates">템플릿 16개</div>
                         </div>
                     </div>
                 </div>
-                <button class="btn" onclick="goToCustomerStep2()" disabled id="influencer-next-btn">선택한 인플루언서의 템플릿 보기</button>
+                <button class="btn" onclick="goToCustomerStep2()" disabled id="theme-next-btn">선택한 테마의 템플릿 보기</button>
             </div>
 
-            <!-- 고객 2단계: 템플릿 선택 (이제 선택된 인플루언서 기준) -->
+            <!-- 고객 2단계: 템플릿 선택 (이제 선택된 테마 기준) -->
             <div id="customer-step2" class="hidden">
-                <h2 id="selected-influencer-name">템플릿 선택</h2>
-                <div class="selected-influencer-info" id="selected-influencer-info">
-                    <!-- 선택된 인플루언서 정보가 여기에 표시됩니다 -->
+                <h2 id="selected-theme-name">템플릿 선택</h2>
+                <div class="selected-theme-info" id="selected-theme-info">
+                    <!-- 선택된 테마 정보가 여기에 표시됩니다 -->
                 </div>
                 
-                <div class="template-grid" id="influencer-templates">
-                    <!-- 선택된 인플루언서의 템플릿들이 동적으로 로드됩니다 -->
+                <div class="template-grid" id="theme-templates">
+                    <!-- 선택된 테마의 템플릿들이 동적으로 로드됩니다 -->
                 </div>
                 <button class="btn" onclick="goToCustomerStep3()" disabled id="template-next-btn">선택한 템플릿으로 진행</button>
             </div>
@@ -1220,100 +1244,138 @@
 
     <script>
         let selectedTemplate = null;
-        let selectedInfluencer = null;
+        let selectedTheme = null;
         let customerPhotos = [];
         let influencerPhotos = [];
 
-        // 인플루언서 데이터
-        const influencers = {
+        // 포토부스 테마 데이터
+        const photoBoothThemes = {
             1: {
                 id: 1,
-                name: '미소 김',
-                category: '뷰티 • 라이프스타일',
-                followers: '85.2K',
-                templates: 12,
-                avatar: '👩‍🎨',
-                gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
+                name: '커플 데이트',
+                category: '로맨틱 • 달달함',
+                description: '둘만의 특별한 순간',
+                templates: 15,
+                icon: '💕',
+                gradient: 'linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%)',
                 templateData: [
-                    { id: 1, name: '핑크 드림', style: '귀여운 스타일' },
-                    { id: 2, name: '로맨틱 로즈', style: '로맨틱 스타일' },
-                    { id: 3, name: '소프트 블러시', style: '자연스러운 스타일' },
-                    { id: 4, name: '글리터 글램', style: '화려한 스타일' }
+                    { id: 1, name: '하트 프레임', style: '사랑스러운 하트 장식' },
+                    { id: 2, name: '로즈 가든', style: '장미꽃밭 배경' },
+                    { id: 3, name: '캔들라이트', style: '촛불 분위기' },
+                    { id: 4, name: '스위트 키스', style: '달콤한 키스 모먼트' },
+                    { id: 5, name: '러브 레터', style: '편지지 콘셉트' }
                 ]
             },
             2: {
                 id: 2,
-                name: '테크보이 이준',
-                category: '테크 • 리뷰',
-                followers: '124K',
-                templates: 8,
-                avatar: '🧑‍💻',
-                gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                name: '크리스마스',
+                category: '시즌 • 홀리데이',
+                description: '따뜻한 겨울 추억',
+                templates: 12,
+                icon: '🎄',
+                gradient: 'linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%)',
                 templateData: [
-                    { id: 5, name: '사이버 네온', style: '미래지향적' },
-                    { id: 6, name: '디지털 매트릭스', style: '테크노 스타일' },
-                    { id: 7, name: '홀로그램', style: '하이테크' },
-                    { id: 8, name: '픽셀 아트', style: '레트로 게임' }
+                    { id: 6, name: '산타 마을', style: '산타클로스와 함께' },
+                    { id: 7, name: '크리스마스 트리', style: '반짝이는 트리 앞에서' },
+                    { id: 8, name: '눈꽃 프레임', style: '하얀 눈꽃 장식' },
+                    { id: 9, name: '선물 상자', style: '예쁜 선물 포장지' },
+                    { id: 10, name: '홀리데이 벽난로', style: '따뜻한 난로 앞' }
                 ]
             },
             3: {
                 id: 3,
-                name: '멜로디 박',
-                category: '음악 • 댄스',
-                followers: '203K',
-                templates: 15,
-                avatar: '🎵',
-                gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
+                name: '벚꽃 나들이',
+                category: '봄 • 자연',
+                description: '핑크빛 로맨스',
+                templates: 10,
+                icon: '🌸',
+                gradient: 'linear-gradient(135deg, #a8e6cf 0%, #dcedc1 100%)',
                 templateData: [
-                    { id: 9, name: '리듬 웨이브', style: '음악적 느낌' },
-                    { id: 10, name: '댄스 플로어', style: '역동적' },
-                    { id: 11, name: '뮤직 비트', style: '비트감 있는' },
-                    { id: 12, name: '하모니', style: '조화로운' }
+                    { id: 11, name: '벚꽃 비', style: '흩날리는 벚꽃잎' },
+                    { id: 12, name: '피크닉', style: '봄 소풍 느낌' },
+                    { id: 13, name: '꽃길 산책', style: '꽃이 만발한 길' },
+                    { id: 14, name: '벚꽃 터널', style: '분홍색 터널' },
+                    { id: 15, name: '하늘 공원', style: '푸른 하늘 배경' }
                 ]
             },
             4: {
                 id: 4,
-                name: '아티스트 최',
-                category: '아트 • 디자인',
-                followers: '67.8K',
-                templates: 20,
-                avatar: '🎨',
+                name: '인생네컷',
+                category: '클래식 • 추억',
+                description: '소중한 일상의 기록',
+                templates: 18,
+                icon: '📸',
                 gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 templateData: [
-                    { id: 13, name: '추상 아트', style: '추상적' },
-                    { id: 14, name: '수채화 드림', style: '몽환적' },
-                    { id: 15, name: '오일 페인팅', style: '고급스러운' },
-                    { id: 16, name: '팝 아트', style: '팝아트 풍' }
+                    { id: 16, name: '빈티지 필름', style: '필름카메라 느낌' },
+                    { id: 17, name: '블랙&화이트', style: '흑백 클래식' },
+                    { id: 18, name: '폴라로이드', style: '즉석사진 스타일' },
+                    { id: 19, name: '레트로 프레임', style: '복고풍 테두리' },
+                    { id: 20, name: '미니멀 화이트', style: '깔끔한 화이트' }
                 ]
             },
             5: {
                 id: 5,
-                name: '꽃님 강',
-                category: '패션 • 스타일링',
-                followers: '156K',
-                templates: 18,
-                avatar: '🌸',
+                name: '생일 파티',
+                category: '축하 • 기념일',
+                description: '특별한 날의 주인공',
+                templates: 14,
+                icon: '🎂',
                 gradient: 'linear-gradient(135deg, #ffa8ff 0%, #8ac6ff 100%)',
                 templateData: [
-                    { id: 17, name: '플라워 파워', style: '꽃무늬' },
-                    { id: 18, name: '빈티지 시크', style: '빈티지' },
-                    { id: 19, name: '모던 클래식', style: '모던한' },
-                    { id: 20, name: '보헤미안', style: '보헤미안' }
+                    { id: 21, name: '생일 케이크', style: '케이크와 촛불' },
+                    { id: 22, name: '파티 모자', style: '생일모자 착용' },
+                    { id: 23, name: '컨페티', style: '색종이 가루 효과' },
+                    { id: 24, name: '풍선 파티', style: '알록달록 풍선' },
+                    { id: 25, name: '골든 프레임', style: '금색 화려한 테두리' }
                 ]
             },
             6: {
                 id: 6,
-                name: '헬스킹 정',
-                category: '피트니스 • 헬스',
-                followers: '98.5K',
-                templates: 10,
-                avatar: '🏃‍♂️',
+                name: '여름 휴가',
+                category: '바캉스 • 여행',
+                description: '시원한 여름 추억',
+                templates: 13,
+                icon: '🏖️',
                 gradient: 'linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)',
                 templateData: [
-                    { id: 21, name: '스포티 액티브', style: '활동적인' },
-                    { id: 22, name: '파워 업', style: '강렬한' },
-                    { id: 23, name: '에너지 부스트', style: '역동적' },
-                    { id: 24, name: '피트니스 라이프', style: '건강미 넘치는' }
+                    { id: 26, name: '해변 일몰', style: '석양이 지는 바다' },
+                    { id: 27, name: '야자수 그늘', style: '야자수 아래서' },
+                    { id: 28, name: '수영복 파티', style: '비키니 & 비치웨어' },
+                    { id: 29, name: '서핑 보드', style: '서핑보드 소품' },
+                    { id: 30, name: '쿨 아이스크림', style: '시원한 아이스크림' }
+                ]
+            },
+            7: {
+                id: 7,
+                name: '할로윈',
+                category: '코스튬 • 재미',
+                description: '무서우면서도 귀여운',
+                templates: 11,
+                icon: '👻',
+                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                templateData: [
+                    { id: 31, name: '유령 친구들', style: '귀여운 유령들' },
+                    { id: 32, name: '마녀 모자', style: '마법사 컨셉' },
+                    { id: 33, name: '호박 등불', style: '잭오랜턴 장식' },
+                    { id: 34, name: '뱀파이어', style: '뱀파이어 코스튬' },
+                    { id: 35, name: '캔디 파티', style: '알록달록 사탕' }
+                ]
+            },
+            8: {
+                id: 8,
+                name: '가을 감성',
+                category: '계절 • 분위기',
+                description: '따스한 가을 햇살',
+                templates: 16,
+                icon: '🍂',
+                gradient: 'linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%)',
+                templateData: [
+                    { id: 36, name: '단풍잎 비', style: '떨어지는 단풍' },
+                    { id: 37, name: '코지 카페', style: '따뜻한 카페 분위기' },
+                    { id: 38, name: '가을 공원', style: '황금빛 나무들' },
+                    { id: 39, name: '스웨터 데이', style: '니트 패션' },
+                    { id: 40, name: '호박 라떼', style: '가을 음료와 함께' }
                 ]
             }
         };
@@ -1587,55 +1649,55 @@
         }
 
         // 고객 플로우 함수들
-        function selectInfluencer(influencerId) {
+        function selectTheme(themeId) {
             // 기존 선택 해제
-            document.querySelectorAll('.influencer-card').forEach(card => {
+            document.querySelectorAll('.theme-card').forEach(card => {
                 card.classList.remove('selected');
             });
             
             // 새로운 선택
-            event.target.closest('.influencer-card').classList.add('selected');
-            selectedInfluencer = influencerId;
-            document.getElementById('influencer-next-btn').disabled = false;
+            event.target.closest('.theme-card').classList.add('selected');
+            selectedTheme = themeId;
+            document.getElementById('theme-next-btn').disabled = false;
         }
 
         function goToCustomerStep2() {
-            if (!selectedInfluencer) {
-                alert('인플루언서를 선택해주세요.');
+            if (!selectedTheme) {
+                alert('포토부스 테마를 선택해주세요.');
                 return;
             }
             
-            // 선택된 인플루언서의 템플릿 로드
-            loadInfluencerTemplates(selectedInfluencer);
+            // 선택된 테마의 템플릿 로드
+            loadThemeTemplates(selectedTheme);
             
             document.getElementById('customer-step1').classList.add('hidden');
             document.getElementById('customer-step2').classList.remove('hidden');
         }
 
-        function loadInfluencerTemplates(influencerId) {
-            const influencer = influencers[influencerId];
+        function loadThemeTemplates(themeId) {
+            const theme = photoBoothThemes[themeId];
             
-            // 인플루언서 이름 업데이트
-            document.getElementById('selected-influencer-name').textContent = `${influencer.name}의 템플릿`;
+            // 테마 이름 업데이트
+            document.getElementById('selected-theme-name').textContent = `${theme.name} 템플릿`;
             
-            // 선택된 인플루언서 정보 표시
-            const infoDiv = document.getElementById('selected-influencer-info');
+            // 선택된 테마 정보 표시
+            const infoDiv = document.getElementById('selected-theme-info');
             infoDiv.innerHTML = `
-                <div class="selected-influencer-avatar" style="background: ${influencer.gradient}; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
-                    ${influencer.avatar}
+                <div class="selected-theme-icon" style="background: ${theme.gradient}; display: flex; align-items: center; justify-content: center; font-size: 1.8rem;">
+                    ${theme.icon}
                 </div>
-                <div class="selected-influencer-details">
-                    <h3>${influencer.name}</h3>
-                    <p>${influencer.category} • 팔로워 ${influencer.followers} • 템플릿 ${influencer.templates}개</p>
+                <div class="selected-theme-details">
+                    <h3>${theme.name}</h3>
+                    <p>${theme.category} • ${theme.description} • 템플릿 ${theme.templates}개</p>
                 </div>
             `;
             
             // 템플릿 그리드 업데이트
-            const templatesDiv = document.getElementById('influencer-templates');
-            templatesDiv.innerHTML = influencer.templateData.map(template => `
+            const templatesDiv = document.getElementById('theme-templates');
+            templatesDiv.innerHTML = theme.templateData.map(template => `
                 <div class="template-card" onclick="selectTemplate(${template.id})">
-                    <div class="template-preview" style="background: ${influencer.gradient}; color: white; font-weight: 500;">
-                        ${template.name}
+                    <div class="template-preview" style="background: ${theme.gradient}; color: white; font-weight: 500;">
+                        ${theme.icon}
                     </div>
                     <div style="margin-top: 12px; font-weight: 500;">${template.name}</div>
                     <div style="color: #718096; font-size: 0.85rem;">${template.style}</div>
