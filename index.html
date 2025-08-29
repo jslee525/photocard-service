@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>포토카드 서비스</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+        }
+
+        .options {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .option-card {
+            background: #f8f9fa;
+            border: 3px solid transparent;
+            border-radius: 15px;
+            padding: 30px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 250px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .option-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .option-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .option-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .option-desc {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        .form-container {
+            text-align: left;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #5a67d8;
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .template-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .template-card {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .template-card:hover, .template-card.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .template-preview {
+            width: 100%;
+            height: 120px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .photo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .photo-upload:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .photo-upload.dragover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .uploaded-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .uploaded-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid #ddd;
+        }
+
+        .feedback-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .sample-result {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .payment-method:hover {
+            border-color: #667eea !important;
+            background-color: #f0f4ff !important;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .option-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 메인 화면 -->
+        <div id="main-screen">
+            <div class="logo">📸 포토카드</div>
+            <div class="subtitle">나만의 특별한 포토카드를 만들어보세요</div>
+            
+            <div class="options">
+                <div class="option-card" onclick="showInfluencerFlow()">
+                    <div class="option-icon">⭐</div>
+                    <div class="option-title">인플루언서</div>
+                    <div class="option-desc">
+                        SNS 계정이나 사진을 업로드하고<br>
+                        나만의 템플릿을 만들어보세요
+                    </div>
+                </div>
+                
+                <div class="option-card" onclick="showCustomerFlow()">
+                    <div class="option-icon">👤</div>
+                    <div class="option-title">일반 고객</div>
+                    <div class="option-desc">
+                        원하는 템플릿을 선택하고<br>
+                        포토카드를 주문하세요
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 인플루언서 플로우 -->
+        <div id="influencer-flow" class="hidden">
+            <button class="back-btn" onclick="showMainScreen()">← 메인으로</button>
+            
+            <!-- 인플루언서 1단계: 서비스 신청 -->
+            <div id="influencer-step1">
+                <h2>인플루언서 서비스 신청</h2>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>이름</label>
+                        <input type="text" id="influencer-name" placeholder="이름을 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label>연락처</label>
+                        <input type="tel" id="influencer-phone" placeholder="연락처를 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label>이메일</label>
+                        <input type="email" id="influencer-email" placeholder="이메일을 입력해주세요">
+                    </div>
+                    <button class="btn" onclick="goToInfluencerStep2()">다음 단계</button>
+                </div>
+            </div>
+
+            <!-- 인플루언서 2단계: SNS ID 또는 사진 업로드 -->
+            <div id="influencer-step2" class="hidden">
+                <h2>SNS 정보 또는 사진 제공</h2>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>방법 선택</label>
+                        <select id="upload-method" onchange="toggleUploadMethod()">
+                            <option value="">선택해주세요</option>
+                            <option value="sns">SNS 계정 연동</option>
+                            <option value="photo">사진 직접 업로드</option>
+                        </select>
+                    </div>
+                    
+                    <div id="sns-section" class="hidden">
+                        <div class="form-group">
+                            <label>SNS 플랫폼</label>
+                            <select id="sns-platform" onchange="checkStep2Completion()">
+                                <option value="">선택해주세요</option>
+                                <option value="instagram">인스타그램</option>
+                                <option value="tiktok">틱톡</option>
+                                <option value="youtube">유튜브</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>SNS ID</label>
+                            <input type="text" id="sns-id" placeholder="@username 형태로 입력해주세요" oninput="checkStep2Completion()">
+                        </div>
+                    </div>
+                    
+                    <div id="photo-section" class="hidden">
+                        <div class="photo-upload" onclick="document.getElementById('photo-input').click()">
+                            <div>📷 사진을 업로드하려면 클릭하거나 드래그하세요</div>
+                            <input type="file" id="photo-input" multiple accept="image/*" style="display: none;" onchange="handlePhotoUpload(event)">
+                        </div>
+                        <div id="uploaded-photos" class="uploaded-photos"></div>
+                    </div>
+                    
+                    <button class="btn" onclick="goToInfluencerStep3()" disabled id="step2-next-btn">템플릿 생성하기</button>
+                </div>
+            </div>
+
+            <!-- 인플루언서 3단계: 템플릿 생성 -->
+            <div id="influencer-step3" class="hidden">
+                <h2>템플릿 생성</h2>
+                <div class="form-container">
+                    <div class="form-group">
+                        <label>템플릿 생성 방법</label>
+                        <select id="template-method" onchange="toggleTemplateMethod()">
+                            <option value="">선택해주세요</option>
+                            <option value="ai">AI 자동 생성</option>
+                            <option value="custom">직접 제작 (실제 촬영 필요)</option>
+                        </select>
+                    </div>
+                    
+                    <div id="ai-generation" class="hidden">
+                        <div class="form-group">
+                            <label>템플릿 스타일</label>
+                            <select id="template-style">
+                                <option value="">선택해주세요</option>
+                                <option value="cute">귀여운 스타일</option>
+                                <option value="cool">시크한 스타일</option>
+                                <option value="vintage">빈티지 스타일</option>
+                                <option value="minimal">미니멀 스타일</option>
+                            </select>
+                        </div>
+                        <button class="btn" onclick="generateAITemplate()">AI 템플릿 생성</button>
+                    </div>
+                    
+                    <div id="custom-creation" class="hidden">
+                        <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                            <h3>📞 직접 제작 서비스</h3>
+                            <p>실제 촬영을 통한 맞춤 템플릿 제작을 원하시면 아래 연락처로 문의해주세요.</p>
+                            <div style="margin-top: 15px; font-weight: bold;">
+                                📞 전화: 010-1234-5678<br>
+                                📧 이메일: contact@photocard.com<br>
+                                💬 카카오톡: @photocard
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="ai-result" class="hidden">
+                        <h3>생성된 템플릿 미리보기</h3>
+                        <div class="sample-result">
+                            <div style="background: #f0f0f0; height: 400px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666;">
+                                AI 생성 4컷 템플릿<br>미리보기
+                            </div>
+                        </div>
+                        <button class="btn" onclick="goToInfluencerStep4()">피드백 제공하기</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 인플루언서 4단계: 피드백 및 등록 -->
+            <div id="influencer-step4" class="hidden">
+                <h2>템플릿 피드백 및 등록</h2>
+                <div class="feedback-section">
+                    <div class="form-group">
+                        <label>템플릿에 대한 피드백</label>
+                        <textarea id="template-feedback" rows="4" placeholder="템플릿 개선사항이나 요청사항을 자세히 적어주세요..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>만족도</label>
+                        <select id="satisfaction">
+                            <option value="">선택해주세요</option>
+                            <option value="5">매우 만족</option>
+                            <option value="4">만족</option>
+                            <option value="3">보통</option>
+                            <option value="2">불만족</option>
+                            <option value="1">매우 불만족</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="submitFeedback()">피드백 제출</button>
+                    <button class="btn" onclick="registerTemplate()" style="background: #28a745; margin-top: 10px;">템플릿 등록하기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 고객 플로우 -->
+        <div id="customer-flow" class="hidden">
+            <button class="back-btn" onclick="showMainScreen()">← 메인으로</button>
+            
+            <!-- 고객 1단계: 템플릿 선택 -->
+            <div id="customer-step1">
+                <h2>템플릿 선택</h2>
+                <div class="template-grid">
+                    <div class="template-card" onclick="selectTemplate(1)">
+                        <div class="template-preview">귀여운 스타일</div>
+                        <div>큐티 템플릿</div>
+                    </div>
+                    <div class="template-card" onclick="selectTemplate(2)">
+                        <div class="template-preview">시크한 스타일</div>
+                        <div>시크 템플릿</div>
+                    </div>
+                    <div class="template-card" onclick="selectTemplate(3)">
+                        <div class="template-preview">빈티지 스타일</div>
+                        <div>빈티지 템플릿</div>
+                    </div>
+                    <div class="template-card" onclick="selectTemplate(4)">
+                        <div class="template-preview">미니멀 스타일</div>
+                        <div>미니멀 템플릿</div>
+                    </div>
+                </div>
+                <button class="btn" onclick="goToCustomerStep2()" disabled id="template-next-btn">선택한 템플릿으로 진행</button>
+            </div>
+
+            <!-- 고객 2단계: 얼굴 사진 업로드 -->
+            <div id="customer-step2" class="hidden">
+                <h2>얼굴 사진 업로드 (3-5장)</h2>
+                <div class="photo-upload" onclick="document.getElementById('customer-photo-input').click()">
+                    <div>📷 얼굴이 잘 보이는 사진 3-5장을 업로드해주세요</div>
+                    <input type="file" id="customer-photo-input" multiple accept="image/*" style="display: none;" onchange="handleCustomerPhotoUpload(event)">
+                </div>
+                <div id="customer-uploaded-photos" class="uploaded-photos"></div>
+                <div style="margin-top: 20px; color: #666; font-size: 0.9rem;">
+                    💡 더 나은 결과를 위한 팁:<br>
+                    • 정면에서 촬영한 사진<br>
+                    • 얼굴이 선명하게 보이는 사진<br>
+                    • 다양한 각도의 사진
+                </div>
+                <button class="btn" onclick="goToCustomerStep3()" disabled id="customer-photo-next-btn">사진 처리하기</button>
+            </div>
+
+            <!-- 고객 3단계: 샘플 확인 -->
+            <div id="customer-step3" class="hidden">
+                <h2>샘플 포토카드 확인</h2>
+                <div class="sample-result">
+                    <div style="background: #f0f0f0; height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #666;">
+                        생성된 샘플<br>포토카드
+                    </div>
+                </div>
+                <button class="btn" onclick="goToCustomerStep4()">피드백 제공하기</button>
+            </div>
+
+            <!-- 고객 4단계: 피드백 -->
+            <div id="customer-step4" class="hidden">
+                <h2>샘플에 대한 피드백</h2>
+                <div class="feedback-section">
+                    <div class="form-group">
+                        <label>개선 요청사항</label>
+                        <textarea id="customer-feedback" rows="4" placeholder="수정하고 싶은 부분이나 개선사항을 적어주세요..."></textarea>
+                    </div>
+                    <button class="btn" onclick="submitCustomerFeedback()">피드백 제출</button>
+                    <button class="btn" onclick="goToCustomerStep5()" style="background: #28a745; margin-top: 10px;">최종 주문하기</button>
+                </div>
+            </div>
+
+            <!-- 고객 5단계: 최종 주문 -->
+            <div id="customer-step5" class="hidden">
+                <h2>4컷 포토카드 주문</h2>
+                <div class="sample-result">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); height: 400px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        최종 4컷<br>포토카드<br>🎯
+                    </div>
+                </div>
+                
+                <!-- 상품 정보 및 가격 -->
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                    <h3 style="margin-bottom: 15px;">📋 주문 정보</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>4컷 포토카드 (고품질 인화)</span>
+                        <span style="font-weight: bold;">15,000원</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>배송비</span>
+                        <span>3,000원</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; color: #28a745;">
+                        <span>할인 (첫 주문)</span>
+                        <span>-2,000원</span>
+                    </div>
+                    <hr style="margin: 15px 0;">
+                    <div style="display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: bold; color: #dc3545;">
+                        <span>총 결제금액</span>
+                        <span>16,000원</span>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <h3 style="margin-bottom: 20px;">📦 배송 정보</h3>
+                    <div class="form-group">
+                        <label>받는 분 이름</label>
+                        <input type="text" id="delivery-name" placeholder="받는 분 이름을 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label>연락처</label>
+                        <input type="tel" id="delivery-phone" placeholder="휴대폰 번호를 입력해주세요">
+                    </div>
+                    <div class="form-group">
+                        <label>배송 주소</label>
+                        <textarea id="delivery-address" rows="3" placeholder="상세 주소까지 정확히 입력해주세요"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>배송 요청사항 (선택)</label>
+                        <input type="text" id="delivery-memo" placeholder="배송시 요청사항이 있으면 적어주세요">
+                    </div>
+                    
+                    <button class="btn" onclick="proceedToPayment()" style="background: #28a745; font-size: 1.1rem; padding: 15px; margin-top: 20px;">💳 결제하기 (16,000원)</button>
+                </div>
+            </div>
+
+            <!-- 고객 6단계: 결제 -->
+            <div id="customer-step6" class="hidden">
+                <h2>💳 결제 정보 입력</h2>
+                
+                <!-- 주문 요약 -->
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 10px; margin-bottom: 30px;">
+                    <h3 style="margin-bottom: 15px; color: #1976d2;">📋 주문 요약</h3>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>상품: 4컷 포토카드</span>
+                        <span>15,000원</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>배송비</span>
+                        <span>3,000원</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px; color: #28a745;">
+                        <span>첫 주문 할인</span>
+                        <span>-2,000원</span>
+                    </div>
+                    <hr>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color: #dc3545;">
+                        <span>총 결제금액</span>
+                        <span>16,000원</span>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <!-- 결제 방법 선택 -->
+                    <div class="form-group">
+                        <label>결제 방법</label>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 10px;">
+                            <div class="payment-method" onclick="selectPaymentMethod('card')" style="border: 2px solid #ddd; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                💳<br><strong>신용카드</strong><br><small>즉시결제</small>
+                            </div>
+                            <div class="payment-method" onclick="selectPaymentMethod('bank')" style="border: 2px solid #ddd; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                🏦<br><strong>계좌이체</strong><br><small>실시간이체</small>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-top: 15px;">
+                            <div class="payment-method" onclick="selectPaymentMethod('kakao')" style="border: 2px solid #ddd; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                💛<br><strong>카카오페이</strong><br><small>간편결제</small>
+                            </div>
+                            <div class="payment-method" onclick="selectPaymentMethod('toss')" style="border: 2px solid #ddd; padding: 15px; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s;">
+                                🔵<br><strong>토스페이</strong><br><small>간편결제</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 신용카드 결제 폼 -->
+                    <div id="card-payment-form" class="hidden">
+                        <h3 style="margin: 30px 0 20px 0;">💳 신용카드 정보</h3>
+                        <div class="form-group">
+                            <label>카드번호</label>
+                            <input type="text" id="card-number" placeholder="1234-5678-9012-3456" maxlength="19" oninput="formatCardNumber(this)">
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                            <div class="form-group">
+                                <label>유효기간</label>
+                                <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                            </div>
+                            <div class="form-group">
+                                <label>CVC</label>
+                                <input type="text" id="card-cvc" placeholder="123" maxlength="3">
+                            </div>
+                            <div class="form-group">
+                                <label>할부</label>
+                                <select id="installment">
+                                    <option value="0">일시불</option>
+                                    <option value="2">2개월</option>
+                                    <option value="3">3개월</option>
+                                    <option value="6">6개월</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>카드 비밀번호 앞 2자리</label>
+                            <input type="password" id="card-password" placeholder="**" maxlength="2">
+                        </div>
+                    </div>
+
+                    <!-- 계좌이체 폼 -->
+                    <div id="bank-payment-form" class="hidden">
+                        <h3 style="margin: 30px 0 20px 0;">🏦 계좌이체 정보</h3>
+                        <div class="form-group">
+                            <label>은행 선택</label>
+                            <select id="bank-select">
+                                <option value="">은행을 선택해주세요</option>
+                                <option value="kb">KB국민은행</option>
+                                <option value="shinhan">신한은행</option>
+                                <option value="woori">우리은행</option>
+                                <option value="hana">하나은행</option>
+                                <option value="nh">NH농협은행</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>계좌번호</label>
+                            <input type="text" id="account-number" placeholder="계좌번호를 입력해주세요">
+                        </div>
+                        <div class="form-group">
+                            <label>예금주명</label>
+                            <input type="text" id="account-holder" placeholder="예금주명을 입력해주세요">
+                        </div>
+                    </div>
+
+                    <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                        <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                            <input type="checkbox" id="agree-terms" style="margin-right: 10px;">
+                            <label for="agree-terms">결제 진행 및 개인정보 수집·이용에 동의합니다.</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="agree-marketing" style="margin-right: 10px;">
+                            <label for="agree-marketing">마케팅 정보 수신에 동의합니다. (선택)</label>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="processPayment()" disabled id="payment-btn" style="background: #dc3545; font-size: 1.2rem; padding: 18px; margin-top: 20px;">🔒 16,000원 결제하기</button>
+                    <button class="btn" onclick="goBackToOrder()" style="background: #6c757d; margin-top: 10px;">← 주문 정보 수정</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedTemplate = null;
+        let customerPhotos = [];
+        let influencerPhotos = [];
+
+        function showMainScreen() {
+            document.getElementById('main-screen').classList.remove('hidden');
+            document.getElementById('influencer-flow').classList.add('hidden');
+            document.getElementById('customer-flow').classList.add('hidden');
+        }
+
+        function showInfluencerFlow() {
+            document.getElementById('main-screen').classList.add('hidden');
+            document.getElementById('influencer-flow').classList.remove('hidden');
+        }
+
+        function showCustomerFlow() {
+            document.getElementById('main-screen').classList.add('hidden');
+            document.getElementById('customer-flow').classList.remove('hidden');
+        }
+
+        // 인플루언서 플로우 함수들
+        function goToInfluencerStep2() {
+            const name = document.getElementById('influencer-name').value;
+            const phone = document.getElementById('influencer-phone').value;
+            const email = document.getElementById('influencer-email').value;
+            
+            if (!name || !phone || !email) {
+                alert('모든 정보를 입력해주세요.');
+                return;
+            }
+            
+            document.getElementById('influencer-step1').classList.add('hidden');
+            document.getElementById('influencer-step2').classList.remove('hidden');
+        }
+
+        function toggleUploadMethod() {
+            const method = document.getElementById('upload-method').value;
+            const snsSection = document.getElementById('sns-section');
+            const photoSection = document.getElementById('photo-section');
+            const nextBtn = document.getElementById('step2-next-btn');
+            
+            snsSection.classList.add('hidden');
+            photoSection.classList.add('hidden');
+            nextBtn.disabled = true;
+            
+            if (method === 'sns') {
+                snsSection.classList.remove('hidden');
+            } else if (method === 'photo') {
+                photoSection.classList.remove('hidden');
+            }
+        }
+
+        function checkStep2Completion() {
+            const method = document.getElementById('upload-method').value;
+            const nextBtn = document.getElementById('step2-next-btn');
+            
+            if (method === 'sns') {
+                const platform = document.getElementById('sns-platform').value;
+                const snsId = document.getElementById('sns-id').value;
+                nextBtn.disabled = !(platform && snsId);
+            } else if (method === 'photo') {
+                nextBtn.disabled = influencerPhotos.length === 0;
+            } else {
+                nextBtn.disabled = true;
+            }
+        }
+
+        function handlePhotoUpload(event) {
+            const files = event.target.files;
+            const container = document.getElementById('uploaded-photos');
+            const nextBtn = document.getElementById('step2-next-btn');
+            
+            influencerPhotos = [];
+            container.innerHTML = '';
+            
+            for (let file of files) {
+                influencerPhotos.push(file);
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'uploaded-photo';
+                container.appendChild(img);
+            }
+            
+            if (influencerPhotos.length > 0) {
+                nextBtn.disabled = false;
+            }
+            
+            checkStep2Completion();
+        }
+
+        function goToInfluencerStep3() {
+            document.getElementById('influencer-step2').classList.add('hidden');
+            document.getElementById('influencer-step3').classList.remove('hidden');
+        }
+
+        function toggleTemplateMethod() {
+            const method = document.getElementById('template-method').value;
+            const aiSection = document.getElementById('ai-generation');
+            const customSection = document.getElementById('custom-creation');
+            
+            aiSection.classList.add('hidden');
+            customSection.classList.add('hidden');
+            
+            if (method === 'ai') {
+                aiSection.classList.remove('hidden');
+            } else if (method === 'custom') {
+                customSection.classList.remove('hidden');
+            }
+        }
+
+        function generateAITemplate() {
+            const style = document.getElementById('template-style').value;
+            if (!style) {
+                alert('템플릿 스타일을 선택해주세요.');
+                return;
+            }
+            
+            // AI 생성 시뮬레이션
+            setTimeout(() => {
+                document.getElementById('ai-result').classList.remove('hidden');
+                alert('AI 템플릿이 생성되었습니다!');
+            }, 2000);
+        }
+
+        function goToInfluencerStep4() {
+            document.getElementById('influencer-step3').classList.add('hidden');
+            document.getElementById('influencer-step4').classList.remove('hidden');
+        }
+
+        function submitFeedback() {
+            const feedback = document.getElementById('template-feedback').value;
+            const satisfaction = document.getElementById('satisfaction').value;
+            
+            if (!feedback || !satisfaction) {
+                alert('피드백과 만족도를 모두 입력해주세요.');
+                return;
+            }
+            
+            // 피드백 처리 중 메시지 표시
+            const feedbackSection = document.querySelector('.feedback-section');
+            feedbackSection.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 2rem; margin-bottom: 20px;">🔄</div>
+                    <h3>피드백을 반영하여 템플릿을 재생성하고 있습니다...</h3>
+                    <p style="color: #666; margin-top: 10px;">잠시만 기다려주세요.</p>
+                </div>
+            `;
+            
+            // 3초 후 새로운 템플릿 표시
+            setTimeout(() => {
+                showRegeneratedTemplate();
+            }, 3000);
+        }
+        
+        function showRegeneratedTemplate() {
+            const feedbackSection = document.querySelector('.feedback-section');
+            feedbackSection.innerHTML = `
+                <h3 style="text-align: center; margin-bottom: 20px;">🎉 개선된 템플릿</h3>
+                <div class="sample-result">
+                    <div style="background: linear-gradient(45deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%); height: 400px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">
+                        피드백 반영<br>개선된 4컷 템플릿<br>✨ Ver 2.0
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <strong>개선사항:</strong><br>
+                        • 피드백을 바탕으로 색상 조정<br>
+                        • 레이아웃 최적화<br>
+                        • 더욱 자연스러운 표현
+                    </div>
+                    <button class="btn" onclick="providMoreFeedback()" style="background: #ffc107; color: #000; margin-right: 10px;">추가 피드백</button>
+                    <button class="btn" onclick="finalizeTemplate()" style="background: #28a745;">최종 승인</button>
+                </div>
+            `;
+        }
+        
+        function providMoreFeedback() {
+            const feedbackSection = document.querySelector('.feedback-section');
+            feedbackSection.innerHTML = `
+                <h3>추가 피드백 제공</h3>
+                <div class="form-group">
+                    <label>추가 개선사항</label>
+                    <textarea id="additional-feedback" rows="4" placeholder="추가로 수정하고 싶은 부분이나 개선사항을 적어주세요..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>현재 만족도</label>
+                    <select id="new-satisfaction">
+                        <option value="">선택해주세요</option>
+                        <option value="5">매우 만족</option>
+                        <option value="4">만족</option>
+                        <option value="3">보통</option>
+                        <option value="2">불만족</option>
+                        <option value="1">매우 불만족</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="submitAdditionalFeedback()">추가 피드백 제출</button>
+                <button class="btn" onclick="showRegeneratedTemplate()" style="background: #6c757d; margin-top: 10px;">이전 템플릿으로 돌아가기</button>
+            `;
+        }
+        
+        function submitAdditionalFeedback() {
+            const feedback = document.getElementById('additional-feedback').value;
+            const satisfaction = document.getElementById('new-satisfaction').value;
+            
+            if (!feedback || !satisfaction) {
+                alert('추가 피드백과 만족도를 모두 입력해주세요.');
+                return;
+            }
+            
+            // 재생성 과정 표시
+            const feedbackSection = document.querySelector('.feedback-section');
+            feedbackSection.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 2rem; margin-bottom: 20px;">🎨</div>
+                    <h3>추가 피드백을 반영하여 최종 템플릿을 생성하고 있습니다...</h3>
+                    <p style="color: #666; margin-top: 10px;">고품질 템플릿 생성 중...</p>
+                </div>
+            `;
+            
+            // 4초 후 최종 템플릿 표시
+            setTimeout(() => {
+                showFinalTemplate();
+            }, 4000);
+        }
+        
+        function showFinalTemplate() {
+            const feedbackSection = document.querySelector('.feedback-section');
+            feedbackSection.innerHTML = `
+                <h3 style="text-align: center; margin-bottom: 20px;">✨ 최종 완성 템플릿</h3>
+                <div class="sample-result">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); height: 400px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); position: relative;">
+                        <div style="text-align: center;">
+                            완벽한 4컷 템플릿<br>
+                            🌟 최종 버전 🌟<br>
+                            <small style="opacity: 0.8;">피드백 완전 반영</small>
+                        </div>
+                        <div style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">
+                            FINAL
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <strong>🎉 템플릿 완성!</strong><br>
+                        모든 피드백이 반영된 최종 템플릿입니다.<br>
+                        이제 웹사이트에 등록할 수 있습니다.
+                    </div>
+                    <button class="btn" onclick="providMoreFeedback()" style="background: #17a2b8; margin-right: 10px;">미세 조정</button>
+                    <button class="btn" onclick="registerTemplate()" style="background: #28a745;">웹사이트에 등록</button>
+                </div>
+            `;
+        }
+        
+        function finalizeTemplate() {
+            const feedbackSection = document.querySelector('.feedback-section');
+            feedbackSection.innerHTML = `
+                <div style="text-align: center; padding: 30px;">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">✅</div>
+                    <h3>템플릿이 최종 승인되었습니다!</h3>
+                    <p style="color: #666; margin: 15px 0;">고객들이 선택할 수 있도록 웹사이트에 등록하시겠습니까?</p>
+                    <button class="btn" onclick="registerTemplate()" style="background: #28a745;">웹사이트에 등록하기</button>
+                </div>
+            `;
+        }
+
+        function registerTemplate() {
+            alert('템플릿이 등록되었습니다! 웹사이트에서 고객들이 선택할 수 있게 됩니다.');
+        }
+
+        // 고객 플로우 함수들
+        function selectTemplate(templateId) {
+            // 기존 선택 해제
+            document.querySelectorAll('.template-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // 새로운 선택
+            event.target.closest('.template-card').classList.add('selected');
+            selectedTemplate = templateId;
+            document.getElementById('template-next-btn').disabled = false;
+        }
+
+        function goToCustomerStep2() {
+            if (!selectedTemplate) {
+                alert('템플릿을 선택해주세요.');
+                return;
+            }
+            
+            document.getElementById('customer-step1').classList.add('hidden');
+            document.getElementById('customer-step2').classList.remove('hidden');
+        }
+
+        function handleCustomerPhotoUpload(event) {
+            const files = event.target.files;
+            const container = document.getElementById('customer-uploaded-photos');
+            const nextBtn = document.getElementById('customer-photo-next-btn');
+            
+            customerPhotos = [];
+            container.innerHTML = '';
+            
+            for (let file of files) {
+                customerPhotos.push(file);
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'uploaded-photo';
+                container.appendChild(img);
+            }
+            
+            if (customerPhotos.length >= 3 && customerPhotos.length <= 5) {
+                nextBtn.disabled = false;
+            } else {
+                nextBtn.disabled = true;
+                if (customerPhotos.length > 0) {
+                    alert('3-5장의 사진을 업로드해주세요.');
+                }
+            }
+        }
+
+        function goToCustomerStep3() {
+            if (customerPhotos.length < 3 || customerPhotos.length > 5) {
+                alert('3-5장의 사진을 업로드해주세요.');
+                return;
+            }
+            
+            document.getElementById('customer-step2').classList.add('hidden');
+            document.getElementById('customer-step3').classList.remove('hidden');
+        }
+
+        function goToCustomerStep4() {
+            document.getElementById('customer-step3').classList.add('hidden');
+            document.getElementById('customer-step4').classList.remove('hidden');
+        }
+
+        function submitCustomerFeedback() {
+            const feedback = document.getElementById('customer-feedback').value;
+            if (!feedback) {
+                alert('피드백을 입력해주세요.');
+                return;
+            }
+            
+            // 피드백 처리 중 메시지 표시
+            const feedbackSection = document.querySelector('#customer-step4 .feedback-section');
+            feedbackSection.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 2rem; margin-bottom: 20px;">🔄</div>
+                    <h3>피드백을 반영하여 포토카드를 재생성하고 있습니다...</h3>
+                    <p style="color: #666; margin-top: 10px;">AI가 개선된 결과를 만들고 있어요.</p>
+                </div>
+            `;
+            
+            // 3초 후 개선된 샘플 표시
+            setTimeout(() => {
+                showImprovedSample();
+            }, 3000);
+        }
+        
+        function showImprovedSample() {
+            const step4 = document.getElementById('customer-step4');
+            step4.innerHTML = `
+                <h2>🎉 개선된 샘플 포토카드</h2>
+                <div class="sample-result">
+                    <div style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.3); position: relative;">
+                        <div style="text-align: center;">
+                            개선된 샘플<br>포토카드 ✨<br>
+                            <small style="opacity: 0.8;">Ver 2.0</small>
+                        </div>
+                        <div style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">
+                            IMPROVED
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <strong>개선사항:</strong><br>
+                        • 피드백을 바탕으로 얼굴 표현 개선<br>
+                        • 더 자연스러운 색감 조정<br>
+                        • 템플릿과의 조화 향상
+                    </div>
+                    <button class="btn" onclick="provideMoreCustomerFeedback()" style="background: #ffc107; color: #000; margin-right: 10px;">추가 수정 요청</button>
+                    <button class="btn" onclick="approveCustomerSample()" style="background: #28a745;">이대로 주문하기</button>
+                </div>
+            `;
+        }
+        
+        function provideMoreCustomerFeedback() {
+            const step4 = document.getElementById('customer-step4');
+            step4.innerHTML = `
+                <h2>추가 수정 요청</h2>
+                <div class="sample-result">
+                    <div style="background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">
+                        현재 샘플
+                    </div>
+                </div>
+                <div class="feedback-section">
+                    <div class="form-group">
+                        <label>추가 수정 요청사항</label>
+                        <textarea id="additional-customer-feedback" rows="4" placeholder="더 수정하고 싶은 부분을 구체적으로 적어주세요..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>현재 만족도</label>
+                        <select id="customer-satisfaction">
+                            <option value="">선택해주세요</option>
+                            <option value="5">매우 만족</option>
+                            <option value="4">만족</option>
+                            <option value="3">보통</option>
+                            <option value="2">불만족</option>
+                            <option value="1">매우 불만족</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="submitAdditionalCustomerFeedback()">추가 수정 요청하기</button>
+                    <button class="btn" onclick="showImprovedSample()" style="background: #6c757d; margin-top: 10px;">이전 결과로 돌아가기</button>
+                </div>
+            `;
+        }
+        
+        function submitAdditionalCustomerFeedback() {
+            const feedback = document.getElementById('additional-customer-feedback').value;
+            const satisfaction = document.getElementById('customer-satisfaction').value;
+            
+            if (!feedback || !satisfaction) {
+                alert('추가 수정 요청사항과 만족도를 모두 입력해주세요.');
+                return;
+            }
+            
+            // 재생성 과정 표시
+            const step4 = document.getElementById('customer-step4');
+            step4.innerHTML = `
+                <div style="text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 2.5rem; margin-bottom: 20px;">🎨</div>
+                    <h2>최종 포토카드를 완성하고 있습니다</h2>
+                    <p style="color: #666; margin-top: 10px; font-size: 1.1rem;">모든 요청사항을 반영하여 완벽한 결과를 만들고 있어요...</p>
+                    <div style="margin-top: 30px;">
+                        <div style="width: 200px; height: 4px; background: #e0e0e0; border-radius: 2px; margin: 0 auto; overflow: hidden;">
+                            <div style="width: 0%; height: 100%; background: #667eea; border-radius: 2px; animation: progress 4s ease-in-out forwards;"></div>
+                        </div>
+                    </div>
+                </div>
+                <style>
+                    @keyframes progress {
+                        0% { width: 0%; }
+                        100% { width: 100%; }
+                    }
+                </style>
+            `;
+            
+            // 4초 후 최종 결과 표시
+            setTimeout(() => {
+                showFinalCustomerResult();
+            }, 4000);
+        }
+        
+        function showFinalCustomerResult() {
+            const step4 = document.getElementById('customer-step4');
+            step4.innerHTML = `
+                <h2>🌟 완벽한 포토카드 완성!</h2>
+                <div class="sample-result">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%); height: 200px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 1.2rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); position: relative;">
+                        <div style="text-align: center;">
+                            완성된 포토카드<br>
+                            🎯 완벽 버전<br>
+                            <small style="opacity: 0.8;">모든 피드백 반영</small>
+                        </div>
+                        <div style="position: absolute; top: 10px; right: 10px; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 20px; font-size: 0.8rem;">
+                            PERFECT
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <strong>🎉 최종 완성!</strong><br>
+                        모든 수정 요청이 완벽하게 반영되었습니다.<br>
+                        이제 4컷 포토카드를 주문하실 수 있습니다.
+                    </div>
+                    <button class="btn" onclick="provideMoreCustomerFeedback()" style="background: #17a2b8; margin-right: 10px;">미세 조정</button>
+                    <button class="btn" onclick="goToCustomerStep5()" style="background: #28a745;">4컷 포토카드 주문하기</button>
+                </div>
+            `;
+        }
+        
+        function approveCustomerSample() {
+            const step4 = document.getElementById('customer-step4');
+            step4.innerHTML = `
+                <div style="text-align: center; padding: 40px;">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">✅</div>
+                    <h2>샘플이 승인되었습니다!</h2>
+                    <p style="color: #666; margin: 15px 0; font-size: 1.1rem;">이제 4컷 포토카드를 제작하여 배송해드리겠습니다.</p>
+                    <button class="btn" onclick="goToCustomerStep5()" style="background: #28a745; font-size: 1.1rem; padding: 15px 30px;">4컷 포토카드 주문하기</button>
+                </div>
+            `;
+        }
+
+        function goToCustomerStep5() {
+            document.getElementById('customer-step4').classList.add('hidden');
+            document.getElementById('customer-step5').classList.remove('hidden');
+        }
+
+        let selectedPaymentMethod = null;
+
+        function proceedToPayment() {
+            const name = document.getElementById('delivery-name').value;
+            const phone = document.getElementById('delivery-phone').value;
+            const address = document.getElementById('delivery-address').value;
+            
+            if (!name || !phone || !address) {
+                alert('배송 정보를 모두 입력해주세요.');
+                return;
+            }
+            
+            document.getElementById('customer-step5').classList.add('hidden');
+            document.getElementById('customer-step6').classList.remove('hidden');
+        }
+
+        function goBackToOrder() {
+            document.getElementById('customer-step6').classList.add('hidden');
+            document.getElementById('customer-step5').classList.remove('hidden');
+        }
+
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // 모든 결제 방법 선택 해제
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.style.borderColor = '#ddd';
+                el.style.backgroundColor = 'white';
+            });
+            
+            // 선택된 방법 하이라이트
+            event.target.closest('.payment-method').style.borderColor = '#667eea';
+            event.target.closest('.payment-method').style.backgroundColor = '#f0f4ff';
+            
+            // 모든 결제 폼 숨기기
+            document.getElementById('card-payment-form').classList.add('hidden');
+            document.getElementById('bank-payment-form').classList.add('hidden');
+            
+            // 선택된 결제 방법에 따라 폼 표시
+            if (method === 'card') {
+                document.getElementById('card-payment-form').classList.remove('hidden');
+            } else if (method === 'bank') {
+                document.getElementById('bank-payment-form').classList.remove('hidden');
+            }
+            
+            checkPaymentForm();
+        }
+
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            let formattedValue = value.replace(/(\d{4})(?=\d)/g, '$1-');
+            if (formattedValue.length > 19) {
+                formattedValue = formattedValue.substr(0, 19);
+            }
+            input.value = formattedValue;
+            checkPaymentForm();
+        }
+
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substr(0, 2) + '/' + value.substr(2, 2);
+            }
+            input.value = value;
+            checkPaymentForm();
+        }
+
+        function checkPaymentForm() {
+            const agreeTerms = document.getElementById('agree-terms').checked;
+            const paymentBtn = document.getElementById('payment-btn');
+            let isFormValid = false;
+            
+            if (selectedPaymentMethod === 'card') {
+                const cardNumber = document.getElementById('card-number').value;
+                const cardExpiry = document.getElementById('card-expiry').value;
+                const cardCvc = document.getElementById('card-cvc').value;
+                const cardPassword = document.getElementById('card-password').value;
+                
+                isFormValid = cardNumber.length === 19 && cardExpiry.length === 5 && 
+                             cardCvc.length === 3 && cardPassword.length === 2;
+            } else if (selectedPaymentMethod === 'bank') {
+                const bankSelect = document.getElementById('bank-select').value;
+                const accountNumber = document.getElementById('account-number').value;
+                const accountHolder = document.getElementById('account-holder').value;
+                
+                isFormValid = bankSelect && accountNumber && accountHolder;
+            } else if (selectedPaymentMethod === 'kakao' || selectedPaymentMethod === 'toss') {
+                isFormValid = true; // 간편결제는 별도 정보 불필요
+            }
+            
+            paymentBtn.disabled = !(isFormValid && agreeTerms);
+            paymentBtn.style.backgroundColor = (isFormValid && agreeTerms) ? '#dc3545' : '#ccc';
+        }
+
+        function processPayment() {
+            if (!selectedPaymentMethod) {
+                alert('결제 방법을 선택해주세요.');
+                return;
+            }
+            
+            // 결제 처리 중 화면
+            const step6 = document.getElementById('customer-step6');
+            step6.innerHTML = `
+                <div style="text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">💳</div>
+                    <h2>결제 처리 중입니다...</h2>
+                    <p style="color: #666; margin: 15px 0; font-size: 1.1rem;">안전한 결제를 위해 잠시만 기다려주세요.</p>
+                    <div style="margin-top: 30px;">
+                        <div style="width: 250px; height: 6px; background: #e0e0e0; border-radius: 3px; margin: 0 auto; overflow: hidden;">
+                            <div style="width: 0%; height: 100%; background: #28a745; border-radius: 3px; animation: paymentProgress 3s ease-in-out forwards;"></div>
+                        </div>
+                        <p style="margin-top: 15px; color: #28a745; font-weight: bold;">결제 승인 중...</p>
+                    </div>
+                </div>
+                <style>
+                    @keyframes paymentProgress {
+                        0% { width: 0%; }
+                        50% { width: 70%; }
+                        100% { width: 100%; }
+                    }
+                </style>
+            `;
+            
+            // 3초 후 결제 완료 화면
+            setTimeout(() => {
+                showPaymentComplete();
+            }, 3000);
+        }
+
+        function showPaymentComplete() {
+            const step6 = document.getElementById('customer-step6');
+            const orderNumber = 'PC' + Date.now().toString().substr(-8);
+            const deliveryDate = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toLocaleDateString('ko-KR');
+            
+            step6.innerHTML = `
+                <div style="text-align: center; padding: 40px 20px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+                    <h2 style="color: #28a745; margin-bottom: 20px;">결제가 완료되었습니다!</h2>
+                    
+                    <div style="background: #d4edda; padding: 25px; border-radius: 15px; margin: 30px 0; text-align: left;">
+                        <h3 style="color: #155724; margin-bottom: 15px; text-align: center;">📋 주문 확인서</h3>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span><strong>주문번호:</strong></span>
+                            <span>${orderNumber}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span><strong>상품명:</strong></span>
+                            <span>4컷 포토카드</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span><strong>결제금액:</strong></span>
+                            <span style="color: #dc3545; font-weight: bold;">16,000원</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span><strong>결제방법:</strong></span>
+                            <span>${getPaymentMethodName()}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                            <span><strong>예상 배송일:</strong></span>
+                            <span>${deliveryDate}</span>
+                        </div>
+                        <hr style="margin: 15px 0;">
+                        <div style="text-align: center; color: #155724;">
+                            <strong>📦 2일 후 배송 시작 예정</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="background: #fff3cd; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3 style="color: #856404;">📱 주문 알림 서비스</h3>
+                        <p style="margin: 10px 0; color: #856404;">
+                            • SMS로 제작 진행 상황을 알려드립니다<br>
+                            • 배송 시작 시 택배 송장번호를 발송합니다<br>
+                            • 고객센터: 010-1234-5678
+                        </p>
+                    </div>
+                    
+                    <div style="margin-top: 30px;">
+                        <button class="btn" onclick="showMainScreen()" style="background: #667eea; font-size: 1.1rem; padding: 15px 30px; margin-right: 15px;">🏠 메인으로 돌아가기</button>
+                        <button class="btn" onclick="downloadReceipt()" style="background: #28a745; font-size: 1.1rem; padding: 15px 30px;">📄 영수증 다운로드</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getPaymentMethodName() {
+            switch(selectedPaymentMethod) {
+                case 'card': return '신용카드';
+                case 'bank': return '계좌이체';
+                case 'kakao': return '카카오페이';
+                case 'toss': return '토스페이';
+                default: return '결제완료';
+            }
+        }
+
+        function downloadReceipt() {
+            alert('영수증이 다운로드되었습니다! (실제 구현시 PDF 생성)');
+        }
+
+        function orderPhotoCard() {
+            // 기존 함수 - 사용하지 않음 (proceedToPayment로 대체)
+            alert('proceedToPayment 함수를 사용해주세요.');
+        }
+
+        // 이벤트 리스너 추가
+        document.addEventListener('DOMContentLoaded', function() {
+            // 약관 동의 체크박스 이벤트
+            const agreeTermsCheckbox = document.getElementById('agree-terms');
+            if (agreeTermsCheckbox) {
+                agreeTermsCheckbox.addEventListener('change', checkPaymentForm);
+            }
+            
+            // 카드 정보 입력 필드 이벤트
+            ['card-cvc', 'card-password'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', checkPaymentForm);
+                }
+            });
+            
+            // 계좌이체 정보 입력 필드 이벤트
+            ['bank-select', 'account-number', 'account-holder'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', checkPaymentForm);
+                    element.addEventListener('change', checkPaymentForm);
+                }
+            });
+        });
+
+        // 드래그 앤 드롭 기능
+        document.addEventListener('DOMContentLoaded', function() {
+            const photoUploads = document.querySelectorAll('.photo-upload');
+            
+            photoUploads.forEach(upload => {
+                upload.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    this.classList.add('dragover');
+                });
+                
+                upload.addEventListener('dragleave', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                });
+                
+                upload.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    this.classList.remove('dragover');
+                    
+                    const files = e.dataTransfer.files;
+                    if (this.querySelector('#photo-input')) {
+                        document.getElementById('photo-input').files = files;
+                        handlePhotoUpload({target: {files: files}});
+                    } else if (this.querySelector('#customer-photo-input')) {
+                        document.getElementById('customer-photo-input').files = files;
+                        handleCustomerPhotoUpload({target: {files: files}});
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
