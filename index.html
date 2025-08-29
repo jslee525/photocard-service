@@ -19,59 +19,175 @@
             min-height: 100vh;
             line-height: 1.6;
             color: #2d3748;
+            margin: 0;
+            padding: 0;
         }
 
-        .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-            padding: 48px;
-            max-width: 800px;
-            width: 95%;
-            margin: 40px auto;
-            position: relative;
-        }
-
-        .container::before {
-            content: '';
-            position: absolute;
+        .app-header {
+            position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(33, 175, 191, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%);
-            border-radius: 24px;
-            pointer-events: none;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 100;
         }
 
-        .logo {
-            font-size: 2.8rem;
+        .app-logo {
+            font-size: 1.8rem;
             font-weight: 700;
             background: linear-gradient(135deg, #21afbf 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .user-type-toggle {
+            display: flex;
+            align-items: center;
+            background: rgba(226, 232, 240, 0.3);
+            border-radius: 50px;
+            padding: 6px;
+            position: relative;
+            width: 200px;
+            height: 44px;
+        }
+
+        .toggle-switch {
+            position: absolute;
+            width: 92px;
+            height: 32px;
+            background: linear-gradient(135deg, #21afbf 0%, #1a8e9f 100%);
+            border-radius: 26px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(33, 175, 191, 0.3);
+            left: 6px;
+        }
+
+        .toggle-switch.customer {
+            left: 102px;
+        }
+
+        .toggle-option {
+            flex: 1;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .toggle-option.active {
+            color: white;
+        }
+
+        .toggle-option.inactive {
+            color: #718096;
+        }
+
+        .container {
+            min-height: 100vh;
+            padding-top: 80px;
+            width: 100%;
+            max-width: none;
+            margin: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            box-shadow: none;
+            backdrop-filter: none;
+        }
+
+        .main-content {
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            margin-bottom: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #21afbf 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
             letter-spacing: -0.02em;
         }
 
         .subtitle {
             color: #718096;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             font-weight: 400;
-            margin-bottom: 48px;
-            max-width: 500px;
+            margin-bottom: 0;
+            max-width: 600px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .options {
+        .user-type-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .user-type-content.active {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+        }
+
+        .content-wrapper {
+            position: relative;
+            min-height: 600px;
+        }
+
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            border-radius: 20px;
+            padding: 40px 32px;
+            text-align: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: rgba(33, 175, 191, 0.3);
         }
 
         .option-card {
@@ -345,27 +461,63 @@
         }
 
         @media (max-width: 768px) {
+            .app-header {
+                padding: 0 20px;
+                height: 70px;
+            }
+            
+            .app-logo {
+                font-size: 1.5rem;
+            }
+            
+            .user-type-toggle {
+                width: 160px;
+                height: 38px;
+            }
+            
+            .toggle-switch {
+                width: 72px;
+                height: 26px;
+            }
+            
+            .toggle-switch.customer {
+                left: 82px;
+            }
+            
+            .toggle-option {
+                font-size: 0.75rem;
+                padding: 6px 8px;
+            }
+            
             .container {
-                padding: 32px 24px;
-                margin: 20px auto;
+                padding-top: 70px;
+            }
+            
+            .main-content {
+                padding: 40px 20px;
+            }
+            
+            .hero-section {
+                padding: 60px 0;
             }
             
             .logo {
-                font-size: 2.4rem;
+                font-size: 3rem;
             }
             
             .subtitle {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
                 margin-bottom: 40px;
             }
             
-            .options {
+            .features-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 24px;
+                margin-top: 40px;
             }
             
-            .option-card {
-                padding: 28px 20px;
+            .feature-card {
+                padding: 32px 24px;
             }
             
             h2 {
@@ -382,18 +534,50 @@
         }
 
         @media (max-width: 480px) {
-            .container {
-                padding: 24px 20px;
-                margin: 10px auto;
-                width: 98%;
+            .app-header {
+                padding: 0 16px;
+            }
+            
+            .app-logo {
+                font-size: 1.3rem;
+            }
+            
+            .user-type-toggle {
+                width: 140px;
+                height: 34px;
+            }
+            
+            .toggle-switch {
+                width: 62px;
+                height: 22px;
+            }
+            
+            .toggle-switch.customer {
+                left: 72px;
+            }
+            
+            .toggle-option {
+                font-size: 0.7rem;
+            }
+            
+            .main-content {
+                padding: 32px 16px;
+            }
+            
+            .hero-section {
+                padding: 40px 0;
             }
             
             .logo {
-                font-size: 2rem;
+                font-size: 2.5rem;
             }
             
             .subtitle {
-                font-size: 1rem;
+                font-size: 1.1rem;
+            }
+            
+            .feature-card {
+                padding: 24px 20px;
             }
             
             .template-grid {
@@ -404,28 +588,83 @@
     </style>
 </head>
 <body>
+    <!-- Fixed Header -->
+    <div class="app-header">
+        <div class="app-logo">📸 포토카드</div>
+        <div class="user-type-toggle">
+            <div class="toggle-switch" id="toggle-switch"></div>
+            <div class="toggle-option active" id="influencer-toggle" onclick="switchToInfluencer()">
+                인플루언서
+            </div>
+            <div class="toggle-option inactive" id="customer-toggle" onclick="switchToCustomer()">
+                일반 고객
+            </div>
+        </div>
+    </div>
+
     <div class="container">
-        <!-- 메인 화면 -->
-        <div id="main-screen">
-            <div class="logo">📸 포토카드</div>
-            <div class="subtitle">나만의 특별한 포토카드를 만들어보세요</div>
-            
-            <div class="options">
-                <div class="option-card" onclick="showInfluencerFlow()">
-                    <div class="option-icon">⭐</div>
-                    <div class="option-title">인플루언서</div>
-                    <div class="option-desc">
-                        SNS 계정이나 사진을 업로드하고<br>
-                        나만의 템플릿을 만들어보세요
+        <div class="main-content">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <div class="logo">📸 포토카드</div>
+                <div class="subtitle" id="main-subtitle">AI로 만드는 나만의 특별한 포토카드</div>
+            </div>
+
+            <!-- Content Wrapper for smooth transitions -->
+            <div class="content-wrapper">
+                <!-- Influencer Content -->
+                <div class="user-type-content active" id="influencer-content">
+                    <div class="features-grid">
+                        <div class="feature-card" onclick="showInfluencerFlow()">
+                            <div class="option-icon">⭐</div>
+                            <div class="option-title">템플릿 제작자가 되어보세요</div>
+                            <div class="option-desc">
+                                SNS 계정 연동 또는 사진 업로드로<br>
+                                AI가 당신만의 독특한 포토카드 템플릿을 생성합니다.<br>
+                                완성된 템플릿은 플랫폼에 등록되어 수익을 창출할 수 있어요.
+                            </div>
+                            <div class="btn" style="width: auto; padding: 16px 32px; margin-top: 24px; display: inline-block;">
+                                템플릿 제작 시작하기
+                            </div>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="option-card" onclick="showCustomerFlow()">
-                    <div class="option-icon">👤</div>
-                    <div class="option-title">일반 고객</div>
-                    <div class="option-desc">
-                        원하는 템플릿을 선택하고<br>
-                        포토카드를 주문하세요
+
+                <!-- Customer Content -->
+                <div class="user-type-content" id="customer-content">
+                    <div class="features-grid">
+                        <div class="feature-card" onclick="showCustomerFlow()">
+                            <div class="option-icon">🎨</div>
+                            <div class="option-title">다양한 템플릿으로 포토카드 주문</div>
+                            <div class="option-desc">
+                                인플루언서들이 만든 다양한 스타일의 템플릿 중<br>
+                                마음에 드는 것을 선택하고 나만의 사진으로<br>
+                                고품질 4컷 포토카드를 주문하세요.
+                            </div>
+                            <div class="btn" style="width: auto; padding: 16px 32px; margin-top: 24px; display: inline-block;">
+                                포토카드 주문하기
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="option-icon">✨</div>
+                            <div class="option-title">AI 인페인팅 기술</div>
+                            <div class="option-desc">
+                                최신 AI 기술로 자연스럽게<br>
+                                당신의 얼굴을 템플릿에 합성하여<br>
+                                완벽한 포토카드를 만들어드립니다.
+                            </div>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="option-icon">🚚</div>
+                            <div class="option-title">빠른 배송 서비스</div>
+                            <div class="option-desc">
+                                주문 후 2일 내 제작 완료<br>
+                                고품질 인화지로 프린트하여<br>
+                                안전하게 포장해 배송해드립니다.
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -823,19 +1062,22 @@
         let influencerPhotos = [];
 
         function showMainScreen() {
-            document.getElementById('main-screen').classList.remove('hidden');
+            // Hide all flows and show main content
             document.getElementById('influencer-flow').classList.add('hidden');
             document.getElementById('customer-flow').classList.add('hidden');
+            document.querySelector('.main-content').style.display = 'block';
         }
 
         function showInfluencerFlow() {
-            document.getElementById('main-screen').classList.add('hidden');
+            document.querySelector('.main-content').style.display = 'none';
             document.getElementById('influencer-flow').classList.remove('hidden');
+            document.getElementById('customer-flow').classList.add('hidden');
         }
 
         function showCustomerFlow() {
-            document.getElementById('main-screen').classList.add('hidden');
+            document.querySelector('.main-content').style.display = 'none';
             document.getElementById('customer-flow').classList.remove('hidden');
+            document.getElementById('influencer-flow').classList.add('hidden');
         }
 
         // 인플루언서 플로우 함수들
@@ -1315,6 +1557,63 @@
         }
 
         let selectedPaymentMethod = null;
+        let currentUserType = 'influencer'; // 'influencer' or 'customer'
+
+        function switchToInfluencer() {
+            if (currentUserType === 'influencer') return;
+            
+            currentUserType = 'influencer';
+            
+            // Toggle switch animation
+            const toggleSwitch = document.getElementById('toggle-switch');
+            const influencerToggle = document.getElementById('influencer-toggle');
+            const customerToggle = document.getElementById('customer-toggle');
+            const mainSubtitle = document.getElementById('main-subtitle');
+            
+            toggleSwitch.classList.remove('customer');
+            influencerToggle.classList.remove('inactive');
+            influencerToggle.classList.add('active');
+            customerToggle.classList.remove('active');
+            customerToggle.classList.add('inactive');
+            
+            // Content transition
+            const influencerContent = document.getElementById('influencer-content');
+            const customerContent = document.getElementById('customer-content');
+            
+            customerContent.classList.remove('active');
+            setTimeout(() => {
+                influencerContent.classList.add('active');
+                mainSubtitle.textContent = 'AI로 만드는 나만의 특별한 포토카드 템플릿';
+            }, 200);
+        }
+
+        function switchToCustomer() {
+            if (currentUserType === 'customer') return;
+            
+            currentUserType = 'customer';
+            
+            // Toggle switch animation
+            const toggleSwitch = document.getElementById('toggle-switch');
+            const influencerToggle = document.getElementById('influencer-toggle');
+            const customerToggle = document.getElementById('customer-toggle');
+            const mainSubtitle = document.getElementById('main-subtitle');
+            
+            toggleSwitch.classList.add('customer');
+            customerToggle.classList.remove('inactive');
+            customerToggle.classList.add('active');
+            influencerToggle.classList.remove('active');
+            influencerToggle.classList.add('inactive');
+            
+            // Content transition
+            const influencerContent = document.getElementById('influencer-content');
+            const customerContent = document.getElementById('customer-content');
+            
+            influencerContent.classList.remove('active');
+            setTimeout(() => {
+                customerContent.classList.add('active');
+                mainSubtitle.textContent = 'AI로 만드는 나만의 특별한 포토카드';
+            }, 200);
+        }
 
         function proceedToPayment() {
             const name = document.getElementById('delivery-name').value;
